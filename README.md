@@ -2,37 +2,35 @@
 
 - [Dotnet SDK](https://dotnet.microsoft.com/en-us/download)
   - `>=8.0` required
+- Docker
 
 ## Run Tests (Local / Dotnet):
 
 From the root directory:
-`dotnet test Amezmo.Tests.E2E`
+`dotnet test -e DOTNET_ENVIRONMENT=Development`
+
+## Run Tests (Docker):
+
+From the root directory
+1. Build container image (below)
+2. Run container w/ credentials of a valid user
+`docker run -e "Credentials__username=<email>" -e "Credentials__password=<password>" <image name>`
 
 ## Build Container Image:
 
 Run the below in the repository root directory
-`docker build --tag "<tag>" -f Amezmo.Tests.E2E/Dockerfile .`
+`docker build --tag "<image name>" -f Amezmo.Tests.E2E/. .`
 
 Run the image / tests (only would work headless for now)
-`docker run "<tag_previous>"`
+`docker run -e "Credentials__username=<email>" -e "Credentials__password=<password>" <image name>`
 
-## Issues
+##  Settings
 
-- Tests fail in headless mode
-- Tests will not run in container (because of headless mode)
-
-##  Settings file
-
-In the root directory of Amezmo.Tests.E2E a settings file should be added:
-
-```json
-{
-  "username" : "<user email>",
-  "password" : "<user password>>",
-  "baseUrl" : "https://amezmo.com/",
-  "headless" : "true"
-}
-```
+- Local Development: .env file and Dotnet User Secrets file
+- Container (available environment args):
+ - `Credentials__username=`
+ - `Credentials__password=`
+ - `BASE_URL=`
 
 This will be replaced by secret ops
 

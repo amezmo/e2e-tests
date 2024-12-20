@@ -4,28 +4,41 @@ using Microsoft.Playwright;
 namespace Amezmo.Tests.Library.Infrastructure.TestClasses;
 
 [TestFixture]
-public abstract class PlaywrightTest(IConfiguration config)
+public abstract class PlaywrightTest
 {
     protected IPlaywright _playwright;
     protected IBrowser? _browser;
+    
+    protected IConfiguration Config { get; private set; }
 
     [OneTimeSetUp]
     public async Task OneTimeSetup()
     {
-        // install playwright (through dotnet)
-        int exitCode = Microsoft.Playwright.Program.Main(["install"]);
-
-        if (exitCode != 0)
+        IConfigurationBuilder configBuilder = new ConfigurationBuilder()
+            .AddEnvironmentVariables();
+        
+        if (Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT") == "Development")
         {
-            throw new Exception($"Failed to install Playwright browsers: {exitCode}");
+            configBuilder.AddTestingEnvFile();
+            configBuilder.AddUserSecrets("001165e4-a2a1-4b4b-869e-a450a8683ac5");
+            
+            // install playwright (through dotnet)
+            int exitCode = Microsoft.Playwright.Program.Main(["install"]);
+
+            if (exitCode != 0)
+            {
+                throw new Exception($"Failed to install Playwright browsers: {exitCode}");
+            }
         }
+        
+        Config = configBuilder.Build();
         
         // Initialize Playwright and launch the browser once for all tests
         _playwright = await Playwright.CreateAsync();
         _browser = await _playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions
         {
-            Headless = bool.Parse(config["headless"] ?? "false"),
-            SlowMo = TimeSpan.FromSeconds(3).Milliseconds,
+            Headless = bool.Parse(Config["HEADLESS"] ?? "true"),
+            SlowMo = int.Parse(Config["SLOWMO"] ?? "0"),
         });
     }
 
