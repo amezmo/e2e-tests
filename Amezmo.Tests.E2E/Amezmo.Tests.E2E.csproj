@@ -7,29 +7,26 @@
 
         <IsPackable>false</IsPackable>
         <IsTestProject>true</IsTestProject>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <UserSecretsId>001165e4-a2a1-4b4b-869e-a450a8683ac5</UserSecretsId>
     </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="coverlet.collector" Version="6.0.0"/>
-        <PackageReference Include="FluentAssertions" Version="7.0.0" />
         <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="9.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="9.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.0" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0"/>
-        <PackageReference Include="Microsoft.Playwright.NUnit" Version="1.49.0"/>
         <PackageReference Include="NUnit" Version="3.14.0"/>
         <PackageReference Include="NUnit.Analyzers" Version="3.9.0"/>
         <PackageReference Include="NUnit3TestAdapter" Version="4.5.0"/>
-        <PackageReference Include="xunit" Version="2.9.2" />
-        <PackageReference Include="xunit.abstractions" Version="2.0.3" />
     </ItemGroup>
 
     <ItemGroup>
-        <Using Include="Microsoft.Playwright.NUnit"/>
         <Using Include="NUnit.Framework"/>
-        <Using Include="System.Text.RegularExpressions"/>
-        <Using Include="System.Threading.Tasks"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Amezmo.Tests.Library\Amezmo.Tests.Library.csproj" />
     </ItemGroup>
 
 </Project>
